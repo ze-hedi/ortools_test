@@ -86,3 +86,24 @@ Edit the `MPS` variable in the script to point to your model file.
 ## Output
 
 Results are printed to stdout and written to a JSON file named `incremental_bench_<mode>.json`.
+
+## Plotting
+
+The plotting script generates two charts per mode:
+
+- **Time histogram** -- grouped bars (Initial Build, 1st Solve, 2nd Solve) per solver, with the 2nd Solve bar split into Update + Solve time.
+- **Simplex iterations histogram** -- paired bars (1st Solve vs 2nd Solve) per solver.
+
+Plot a single mode:
+
+```bash
+python3 plot_incremental_bench.py incremental_bench_coeff.json
+```
+
+Plot all 4 modes at once (generates 8 PNGs):
+
+```bash
+./plot_all.sh
+```
+
+Output files: `incremental_bench_<mode>.png` (time) and `incremental_bench_<mode>_iters.png` (iterations).
