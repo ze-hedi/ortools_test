@@ -1,6 +1,4 @@
 build/
 *.o
 *.csv
-*.json
-*.png
 bfloat16_demo

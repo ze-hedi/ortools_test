@@ -1,0 +1,32 @@
+{
+  "GLOP": {
+    "initial_build_ms": 3668.71,
+    "first_solve_ms": 2672.53,
+    "second_solve_ms": 14599.21,
+    "update_duration_ms": 196.49,
+    "first_simplex_iters": 1109,
+    "first_barrier_iters": 0,
+    "second_simplex_iters": 17638,
+    "second_barrier_iters": 0
+  },
+  "HIGHS": {
+    "initial_build_ms": 4122.13,
+    "first_solve_ms": 12815.72,
+    "second_solve_ms": 17025.36,
+    "update_duration_ms": 4204.46,
+    "first_simplex_iters": 425,
+    "first_barrier_iters": 0,
+    "second_simplex_iters": 425,
+    "second_barrier_iters": 0
+  },
+  "XPRESS": {
+    "initial_build_ms": 5690.83,
+    "first_solve_ms": 3963.01,
+    "second_solve_ms": 9720.40,
+    "update_duration_ms": 5745.82,
+    "first_simplex_iters": 168,
+    "first_barrier_iters": 0,
+    "second_simplex_iters": 239,
+    "second_barrier_iters": 0
+  }
+}
