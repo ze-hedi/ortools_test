@@ -39,16 +39,8 @@ for bar, val in zip(bars, initial_build):
     ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
             f"{val:.1f}", ha="center", va="bottom", fontsize=8)
 
-# 1st Solve — build legend label with iteration counts per solver
-first_iters_parts = []
-for s, si, bi in zip(solvers, first_simplex, first_barrier):
-    parts = []
-    if si: parts.append(f"S:{si}")
-    if bi: parts.append(f"B:{bi}")
-    first_iters_parts.append(f"{s}: {', '.join(parts)}" if parts else f"{s}: 0")
-first_solve_label = "1st Solve\n  " + "\n  ".join(first_iters_parts)
 bars = ax.bar(x + offsets[1] * width, first_solve, width,
-              label=first_solve_label, color="#4CAF50")
+              label="1st Solve", color="#4CAF50")
 for bar, val in zip(bars, first_solve):
     ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
             f"{val:.1f}", ha="center", va="bottom", fontsize=8)
@@ -56,16 +48,8 @@ for bar, val in zip(bars, first_solve):
 # 2nd Solve: update (bottom) + pure solve (top), stacked
 pos = x + offsets[2] * width
 ax.bar(pos, update_dur, width, label="Update (in 2nd Solve)", color="#F44336")
-
-second_iters_parts = []
-for s, si, bi in zip(solvers, second_simplex, second_barrier):
-    parts = []
-    if si: parts.append(f"S:{si}")
-    if bi: parts.append(f"B:{bi}")
-    second_iters_parts.append(f"{s}: {', '.join(parts)}" if parts else f"{s}: 0")
-solve_only_label = "Solve (in 2nd Solve)\n  " + "\n  ".join(second_iters_parts)
 ax.bar(pos, solve_only, width, bottom=update_dur,
-       label=solve_only_label, color="#FF9800")
+       label="Solve (in 2nd Solve)", color="#FF9800")
 for xi, total, upd in zip(pos, second_solve, update_dur):
     ax.text(xi, total + 0.5, f"{total:.1f}", ha="center", va="bottom", fontsize=8)
     if upd > 0.5:
@@ -86,3 +70,37 @@ plt.tight_layout()
 plt.savefig(png_file, dpi=150)
 plt.show()
 print(f"Saved to {png_file}")
+
+# --- Simplex iterations histogram ---
+iters_png = f"incremental_bench_{suffix}_iters.png"
+
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+width2 = 0.3
+x2 = np.arange(len(solvers))
+
+bars1 = ax2.bar(x2 - width2 / 2, first_simplex, width2,
+                label="1st Solve", color="#4CAF50")
+bars2 = ax2.bar(x2 + width2 / 2, second_simplex, width2,
+                label="2nd Solve", color="#FF9800")
+
+for bar, val in zip(bars1, first_simplex):
+    if val > 0:
+        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
+                 str(val), ha="center", va="bottom", fontsize=9)
+for bar, val in zip(bars2, second_simplex):
+    if val > 0:
+        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
+                 str(val), ha="center", va="bottom", fontsize=9)
+
+ax2.set_xlabel("Solver")
+ax2.set_ylabel("Simplex Iterations")
+ax2.set_title(f"Simplex Iterations — {mode_label} perturbation")
+ax2.set_xticks(x2)
+ax2.set_xticklabels(solvers)
+ax2.legend()
+ax2.grid(axis="y", alpha=0.3)
+
+plt.tight_layout()
+plt.savefig(iters_png, dpi=150)
+plt.show()
+print(f"Saved to {iters_png}")
